@@ -1,0 +1,32 @@
+1.4 Парсер аргументов для программы
+
+import subprocess      		# импортируем модуль subprocess
+import optparse       		# импортируем модуль optparse
+
+parser = optparse.OptionParser()  
+
+	# OptionParser - класс модуля optparse. создаём экземпляр этого класса, объект - parser.
+	# parser - дочерний элемент, умеющий всё, что умеет его родитель - класс OptionPaser 
+	# Создали объект, добавили опции, вызвали метод parse_args, который возращает аргументы
+	# и значения. python MACchange1.py --interface etho0 --mac 00:00:00:11:11:11
+
+
+parser.add_option("-i", "--interface", dest="interface", help="Интерфейс для изменения МАС адреса")
+parser.add_option("-m", "--mac", dest="new_mac", help="Новый МАС адрес")
+
+(options, arguments) = parser.parse_args()     
+
+	# метод парс_аргс возвращает параметры в переменные options, arguments. В аrguments будут храниться аргументы
+	# --interface, --mac. В переменной options будут храниться eth0, 00:00:00:11:11:11.
+	# Чтобы получить доступ к значению интерфейса, которое ввел пользователь, необходимо options.interface
+	# доступ к значению МАС, необходимо options.new_mac	
+
+interface = options.interface
+new_mac = options.new_mac
+
+print("Меням МАС адрес для " + interface + " на " + new_mac)
+
+subprocess.call(["ifconfig", interface, "down"])
+subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+subprocess.call(["ifconfig", interface, "up"])
+

@@ -1,0 +1,44 @@
+1.5 Рефакторинг. Функции.
+
+import subprocess      # импортируем модуль subprocess
+import optparse        # импортируем модуль optparse
+
+def change_mac(interface, new_mac): 
+    print("Меням МАС адрес для " + interface + " на " + new_mac)
+    subprocess.call(["ifconfig", interface, "down"])
+    subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+    subprocess.call(["ifconfig", interface, "up"])
+
+	# Создали функцию change_mac с параметрами interface и new_mac.
+
+parser = optparse.OptionParser()  # OptionParser - класс модуля optparser
+parser.add_option("-i", "--interface", dest="interface", help="Интерфейс для изменения МАС адреса")
+parser.add_option("-m", "--mac", dest="new_mac", help="Новый МАС адрес")
+
+(options, arguments) = parser.parse_args()
+
+change_mac(options.interface, options.new_mac)
+
+	# вызываем функцию change_mac c параметрами (interface, new_mac)
+
+1.5.5 Функции
+
+import subprocess      # импортируем модуль subprocess
+import optparse        # импортируем модуль optparse
+
+def get_arguments():  # получить аргумент
+    parser = optparse.OptionParser()  # OptionParser - класс модуля optparser
+    parser.add_option("-i", "--interface", dest="interface", help="Интерфейс для изменения МАС адреса")
+    parser.add_option("-m", "--mac", dest="new_mac", help="Новый МАС адрес")
+    return parser.parse_args() 
+
+
+def change_mac(interface, new_mac):
+    print("Меням МАС адрес для " + interface + " на " + new_mac)
+    subprocess.call(["ifconfig", interface, "down"])
+    subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+    subprocess.call(["ifconfig", interface, "up"])
+
+(options, arguments) = get_arguments()
+change_mac(options.interface, options.new_mac)
+

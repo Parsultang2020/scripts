@@ -1,0 +1,36 @@
+1.2 Переменные для сетей и МАС адресов:
+
+import subprocess      # импортируем модуль subprocess
+
+interface = "eth0"   			 	- задаём переменной interface - eth0
+new_mac = "00:11:66:55:44:33"   		- задаём переменной new_mac МАС адрес
+
+print("Меням МАС адрес для " + interface + " на " + new_mac)
+
+subprocess.call("ifconfig " + interface + " down", shell=True)   # функция call исполняет команду, отключаемся от сети
+subprocess.call("ifconfig " + interface + " hw ether " + new_mac, shell=True)   # меням МАС на указанный, ether - указатель на МАС
+subprocess.call("ifconfig " + interface + " up", shell=True)     # подключаемся к сети
+
+1.3 Пользовательский ввод названия интерфейса и МАС адреса:
+
+import subprocess      # импортируем модуль subprocess
+
+interface = input("Введите имя интерфейса: ") 		- пользователь введёт имя в переменную
+new_mac = input("Укажите новый МАС: ")			- пользователь введёт МАС в переменную
+
+print("Меням МАС адрес для " + interface + " на " + new_mac)
+
+subprocess.call("ifconfig " + interface + " down", shell=True)
+subprocess.call("ifconfig " + interface + " hw ether " + new_mac, shell=True)
+subprocess.call("ifconfig " + interface + " up", shell=True)
+
+1.3.5 Обрабатываем ввод пользователя:
+subprocess.call(["список"]) - данный метод позволит сделать некую защиту ввода, поскольку
+в переменную мы могли загнать любую линусовскую команду, которая была бы исполнена. Такой метод
+позволит интерпритировать переменную исключительно как объект, который не нужно исполнять, будь он назван 
+командой, поскольку он является элементом списка.
+
+subprocess.call(["ifconfig", interface, "down"])  
+subprocess.call(["ifconfig", interface, "hw", "ether", new_mac])
+subprocess.call(["ifconfig", interface, "up"])
+
